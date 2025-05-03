@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Psychological Questions</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+<body class="bg-gradient-to-br from-purple-600 to-indigo-700 text-white min-h-screen flex flex-col items-center justify-center p-4">
+  <h1 class="text-3xl md:text-5xl font-bold mb-6 text-center">Random Deep Psychological Question</h1>  <div id="cardSnapshot" class="bg-orange-100 text-gray-900 rounded-2xl shadow-lg p-6 max-w-xl w-full text-center space-y-4">
+    <h2 id="question" class="text-xl font-semibold">Is free will real, or just an illusion?</h2>
+    <textarea id="answer" class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400" rows="4" placeholder="What do you think?"></textarea>
+  </div>  <div class="flex space-x-4 mt-6">
+    <button onclick="getRandomQuestion()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-2xl shadow">Next Question</button>
+    <button onclick="downloadCard()" class="bg-orange-500 hover:bg-orange-400 text-white font-semibold py-2 px-4 rounded-2xl shadow">Download as Card</button>
+  </div>  <script>
+    const questions = [
+      "Is free will real, or just an illusion?",
+      "What defines a person's true self?",
+      "Can happiness exist without sadness?",
+      "Is reality subjective or objective?",
+      "Does everything happen for a reason?",
+    ];
+
+    function getRandomQuestion() {
+      const random = questions[Math.floor(Math.random() * questions.length)];
+      document.getElementById("question").innerText = random;
+      document.getElementById("answer").value = "";
+    }
+
+    function downloadCard() {
+      const card = document.getElementById("cardSnapshot");
+      html2canvas(card).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "thought_card.png";
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+  </script></body>
+</html>

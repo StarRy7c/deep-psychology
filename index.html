@@ -6,6 +6,141 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto&family=Pacifico&family=Montserrat&family=Lobster&family=Raleway&family=Merriweather&family=Indie+Flower&family=Amatic+SC&family=Source+Code+Pro&family=Quicksand&display=swap');.fancy-card {
+  background: linear-gradient(145deg, #fff7e6, #f5ebd9);
+  font-family: 'Roboto', sans-serif;
+  border: 4px double #d4af37;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.fancy-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.3);
+}
+.fade-in-up {
+  animation: fade-in-up 0.5s ease-out both;
+}
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.gradient-border {
+  border: 3px solid;
+  border-image-slice: 1;
+  border-width: 3px;
+  border-image-source: linear-gradient(to right, #d4af37, #ff9900);
+}
+@keyframes bounce-in {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.animate-bounce-in {
+  animation: bounce-in 0.4s ease;
+}
+.animated-btn {
+  transition: all 0.3s ease;
+}
+.animated-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(255,255,255,0.8);
+}
+
+  </style>
+</head>
+<body class="bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-600 text-white min-h-screen flex flex-col items-center justify-center p-4">
+  <h1 class="text-3xl md:text-5xl font-bold mb-6 text-center fade-in-up">Random Deep Psychological Question</h1>  <div id="cardSnapshot" class="fancy-card text-gray-900 text-center space-y-4 max-w-xl w-full gradient-border fade-in-up">
+    <h2 id="question" class="text-xl font-semibold font-sans">Is free will real, or just an illusion?</h2>
+    <div id="answerContainer" class="whitespace-pre-wrap break-words bg-white p-3 rounded-lg border border-gray-300 text-left min-h-[150px] text-base leading-relaxed"></div>
+    <div class="text-right italic text-sm flex items-center justify-end space-x-2" id="attribution">
+      <img id="genderImage" src="" class="w-8 h-8 rounded-full border border-gray-400" alt="avatar" />
+      <span id="userNameText" class="text-black">Someone</span>
+    </div>
+  </div>  <div class="flex space-x-4 mt-6 fade-in-up">
+    <button onclick="getRandomQuestion()" class="animated-btn bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-2xl shadow">Next Question</button>
+    <button onclick="openPopup()" class="animated-btn bg-orange-500 hover:bg-orange-400 text-white font-semibold py-2 px-4 rounded-2xl shadow">Download as Card</button>
+  </div>  <div id="popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-xl text-gray-800 w-96 space-y-4 animate-bounce-in">
+      <h2 class="text-xl font-bold">Customize Your Card</h2>
+      <input id="userName" class="w-full border rounded p-2" placeholder="Your name" />
+      <select id="gender" class="w-full border rounded p-2">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <select id="font" class="w-full border rounded p-2">
+        <option value="Playfair Display">Elegant Serif</option>
+        <option value="Roboto">Modern Sans</option>
+        <option value="Pacifico">Handwritten</option>
+        <option value="Montserrat">Clean & Rounded</option>
+        <option value="Lobster">Playful Script</option>
+        <option value="Raleway">Stylish Minimal</option>
+        <option value="Merriweather">Classic Readable</option>
+        <option value="Indie Flower">Fun Handwritten</option>
+        <option value="Amatic SC">Tall Hand Script</option>
+        <option value="Source Code Pro">Monospace</option>
+        <option value="Quicksand">Rounded Soft</option>
+      </select>
+      <textarea id="answerInput" class="w-full border rounded p-3 min-h-[150px]" placeholder="Your thoughts..."></textarea>
+      <div class="flex justify-end space-x-2">
+        <button onclick="closePopup()" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+        <button onclick="finalizeDownload()" class="px-4 py-2 bg-indigo-600 text-white rounded">Download</button>
+      </div>
+    </div>
+  </div>  <script>
+    const questions = [
+      "Is free will real, or just an illusion?",
+      "What defines a person's true self?",
+      "Can happiness exist without sadness?",
+      "Is reality subjective or objective?",
+      "Does everything happen for a reason?",
+    ];
+
+    function getRandomQuestion() {
+      const random = questions[Math.floor(Math.random() * questions.length)];
+      document.getElementById("question").innerText = random;
+      document.getElementById("answerContainer").innerText = "";
+    }
+
+    function openPopup() {
+      document.getElementById("popup").classList.remove("hidden");
+    }
+
+    function closePopup() {
+      document.getElementById("popup").classList.add("hidden");
+    }
+
+    function finalizeDownload() {
+      const name = document.getElementById("userName").value || "Someone";
+      const gender = document.getElementById("gender").value;
+      const font = document.getElementById("font").value;
+      const answer = document.getElementById("answerInput").value || "";
+
+      document.getElementById("userNameText").innerText = name;
+      document.getElementById("answerContainer").innerText = answer;
+      document.getElementById("answerContainer").style.fontFamily = font;
+      document.getElementById("userNameText").style.fontFamily = font;
+      document.getElementById("genderImage").src = gender === 'female' ? 'images (2).jpeg' : 'images (3).jpeg';
+
+      closePopup();
+      setTimeout(() => {
+        html2canvas(document.getElementById("cardSnapshot"), { scale: 2 }).then(canvas => {
+          const link = document.createElement("a");
+          link.download = "thought_card.png";
+          link.href = canvas.toDataURL();
+          link.click();
+        });
+      }, 100);
+    }
+  </script></body>
+</html><!--DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Psychological Questions</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto&family=Pacifico&family=Montserrat&family=Lobster&display=swap');
     .fancy-card {
       background: linear-gradient(145deg, #fff7e6, #f5ebd9);

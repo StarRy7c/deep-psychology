@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,25 +9,61 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto&display=swap');
     .fancy-card {
-      background: #fdf6e3;
+      background: linear-gradient(145deg, #fff7e6, #f5ebd9);
       font-family: 'Playfair Display', serif;
-      border: 4px solid #c2b280;
+      border: 4px double #d4af37;
       padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-      background-image: url('data:image/png;base64,...'); /* Use texture or pattern if needed */
+      border-radius: 1.5rem;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+    .fancy-card:hover {
+      transform: scale(1.01);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.3);
+    }
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in-up {
+      animation: fade-in-up 0.5s ease-out both;
+    }
+    .gradient-border {
+      border: 3px solid;
+      border-image-slice: 1;
+      border-width: 3px;
+      border-image-source: linear-gradient(to right, #d4af37, #ff9900);
+    }
+    .profile-pic {
+      width: 40px;
+      height: 40px;
+      border-radius: 9999px;
+      object-fit: cover;
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      border: 2px solid #d4af37;
     }
   </style>
 </head>
 <body class="bg-gradient-to-br from-purple-600 to-indigo-700 text-white min-h-screen flex flex-col items-center justify-center p-4">
-  <h1 class="text-3xl md:text-5xl font-bold mb-6 text-center">Random Deep Psychological Question</h1>  <div id="cardSnapshot" class="fancy-card text-gray-900 text-center space-y-4 max-w-xl w-full">
+  <h1 class="text-3xl md:text-5xl font-bold mb-6 text-center fade-in-up">Random Deep Psychological Question</h1>
+
+  <div id="cardSnapshot" class="fancy-card text-gray-900 text-center space-y-4 max-w-xl w-full gradient-border fade-in-up">
+    <img id="profileImage" src="" alt="Profile" class="profile-pic hidden" />
     <h2 id="question" class="text-xl font-semibold">Is free will real, or just an illusion?</h2>
     <textarea id="answer" class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400" rows="4" placeholder="What do you think?"></textarea>
     <div class="text-right italic text-sm" id="attribution">— Someone</div>
-  </div>  <div class="flex space-x-4 mt-6">
-    <button onclick="getRandomQuestion()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-2xl shadow">Next Question</button>
-    <button onclick="openPopup()" class="bg-orange-500 hover:bg-orange-400 text-white font-semibold py-2 px-4 rounded-2xl shadow">Download as Card</button>
-  </div>  <!-- Popup Modal -->  <div id="popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+  </div>
+
+  <div class="flex space-x-4 mt-6 fade-in-up">
+    <button onclick="getRandomQuestion()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-2xl shadow transform hover:scale-105 transition">Next Question</button>
+    <button onclick="openPopup()" class="bg-orange-500 hover:bg-orange-400 text-white font-semibold py-2 px-4 rounded-2xl shadow transform hover:scale-105 transition">Download as Card</button>
+  </div>
+
+  <!-- Popup Modal -->
+  <div id="popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white p-6 rounded-xl text-gray-800 w-96 space-y-4 animate-bounce-in">
       <h2 class="text-xl font-bold">Customize Your Card</h2>
       <input id="userName" class="w-full border rounded p-2" placeholder="Your name" />
@@ -43,7 +80,9 @@
         <button onclick="finalizeDownload()" class="px-4 py-2 bg-indigo-600 text-white rounded">Download</button>
       </div>
     </div>
-  </div>  <script>
+  </div>
+
+  <script>
     const questions = [
       "Is free will real, or just an illusion?",
       "What defines a person's true self?",
@@ -70,12 +109,13 @@
       const name = document.getElementById("userName").value || "Someone";
       const gender = document.getElementById("gender").value;
       const font = document.getElementById("font").value;
+      const profileImage = document.getElementById("profileImage");
+
+      profileImage.src = gender === 'female' ? 'female.jpg' : 'male.jpg';
+      profileImage.classList.remove("hidden");
 
       const attribution = document.getElementById("attribution");
       attribution.innerText = `— ${name}`;
-
-      const logo = gender === 'female' ? '♀️' : '♂️'; // Use emoji or replace with image if needed
-      attribution.innerText = `${logo} — ${name}`;
 
       document.getElementById("cardSnapshot").style.fontFamily = font;
 
@@ -87,7 +127,9 @@
         link.click();
       });
     }
-  </script>  <style>
+  </script>
+
+  <style>
     @keyframes bounce-in {
       0% { transform: scale(0.8); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
@@ -95,5 +137,6 @@
     .animate-bounce-in {
       animation: bounce-in 0.4s ease;
     }
-  </style></body>
+  </style>
+</body>
 </html>
